@@ -1,14 +1,26 @@
-## Tech Stack
-- Postman
-- SQL
-- Java
-- GitHub
+# Software QA / SQA 포트폴리오
 
-## Project Contents
-- API Testing
-- SQL Data Validation
-- Java API Testing
-- Test Cases & Test Reports
+게임 QA 실무 경험을 바탕으로 소프트웨어 QA 역량을 확장하기 위해 진행하는 학습 및 실습 포트폴리오입니다.
 
-## Progress
-- Day 1: Postman API 자동 검증
+Postman, SQL, Java를 활용한 API 테스트와 데이터 검증, 테스트 자동화 역량 습득을 목표로 합니다.
+
+## 학습 목표
+
+- **Postman**: REST API 구조 이해 및 자동화 테스트 구현
+- **SQL**: 데이터 조회 및 데이터 정합성 검증
+- **Java**: 프로그래밍 기초 및 API 테스트 활용
+- **QA 실무**: 테스트 설계, 결함 분석 및 검증 결과 문서화
+
+## 학습 환경 및 기술
+
+- API 테스트: Postman, JavaScript
+- 데이터베이스: SQL
+- 프로그래밍: Java
+- 버전 관리 및 문서화: Git, GitHub
+
+## 학습 진행 현황
+
+| 일차 | 학습 내용 | 상태 |
+|---|---|---|
+| 1일차 | Postman 기초 및 API 응답 자동 검증 | 완료 |
+| 2일차 | Postman API 연계 및 컬렉션 변수 활용 | 완료 |
