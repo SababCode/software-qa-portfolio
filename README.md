@@ -11,4 +11,5 @@
 - Test Cases & Test Reports
 
 ## Progress
-- Day 1: Postman API 자동 검증 완료 (5 Passed / 0 Failed)
+- Day 1: Postman API 자동 검증
+- 
