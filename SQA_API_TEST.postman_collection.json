@@ -1,0 +1,189 @@
+{
+  "info": {
+    "_postman_id": "fe203d0d-371f-4f25-bf8a-0df31644fe6e",
+    "name": "SQA_API_TEST",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57617772",
+    "_collection_link": "https://go.postman.co/collection/57617772-fe203d0d-371f-4f25-bf8a-0df31644fe6e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Day01_GET",
+      "item": [
+        {
+          "name": "GET_Positive_id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-001: 정상 조회 상태 코드 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"TC-002: 게시글 ID 일치\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.id).to.eql(1);\r\n});\r\n\r\npm.test(\"TC-003: 필수 필드 존재\", function () {\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data).to.have.property(\"userId\");\r\n    pm.expect(data).to.have.property(\"id\");\r\n    pm.expect(data).to.have.property(\"title\");\r\n    pm.expect(data).to.have.property(\"body\");\r\n});\r\n\r\npm.test(\"TC-004: 데이터 타입 검증\", function () {\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data.userId).to.be.a(\"number\");\r\n    pm.expect(data.id).to.be.a(\"number\");\r\n    pm.expect(data.title).to.be.a(\"string\");\r\n    pm.expect(data.body).to.be.a(\"string\");\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET_Native_id Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"TC-001: 정상 조회 상태 코드 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/9999999",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "9999999"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "DAY02_POST",
+      "item": [
+        {
+          "name": "01_Create_User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();\r\n\r\npm.test(\"POST 상태 코드 201\", function(){\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"제목 일치 검증\", function(){\r\n    pm.expect(data.title).to.eql(\"SQA DAY2 Test\");\r\n});\r\n\r\npm.test(\"userId 일치 검증\", function(){\r\n    pm.expect(data.userId).to.eql(1);\r\n});\r\n\r\npm.test(\"생성 ID 존재 검증\", function(){\r\n    pm.expect(data.id).to.be.a(\"number\");\r\n});\r\n\r\nif(pm.response.code === 201 && Number.isInteger(data.id)){\r\n    pm.collectionVariables.set(\"created_id\", data.id);\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"SQA DAY2 Test\",\r\n    \"body\": \"API automation practice\",\r\n    \"userId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02_Get_User_Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();\nconst createdId = pm.collectionVariables.get(\"created_id\");\n\npm.test(\"GET 상태 코드 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"조회 ID 일치 검증\", function () {\n    pm.expect(data.id).to.eql(1);\n});\n\npm.test(\"userId 타입 검증\", function () {\n    pm.expect(data.userId).to.be.a(\"number\");\n});\n\npm.test(\"POST에서 저장한 ID 확인\", function () {\n    pm.expect(Number(createdId)).to.be.greaterThan(0);\n    pm.collectionVariables.unset(\"created_id\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03_Get_Invalid_Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"존재하지 않은 데이터는 404\", function(){\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\npm.test(\"응답이 Json 형식인지 확인\", function(){\r\n    pm.response.to.be.json;\r\n});\r\n\r\npm.test(\"조회 결과 빈 객체인지 확인\", function(){\r\n    pm.expect(pm.response.json()).to.eql({});\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/999999",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "999999"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
