@@ -12,4 +12,3 @@
 
 ## Progress
 - Day 1: Postman API 자동 검증
-- 
