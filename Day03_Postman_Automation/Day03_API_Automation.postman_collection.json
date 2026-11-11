@@ -1,0 +1,172 @@
+{
+  "info": {
+    "_postman_id": "fe203d0d-371f-4f25-bf8a-0df31644fe6e",
+    "name": "SQA_API_TEST",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57617772",
+    "_collection_link": "https://go.postman.co/collection/57617772-fe203d0d-371f-4f25-bf8a-0df31644fe6e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "DAY03_Postman API Automation",
+      "item": [
+        {
+          "name": "01-Basic API Tests",
+          "item": [
+            {
+              "name": "Existing User",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"조회 성공\",function(){\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"조회된 사용자 정보 확인\", function(){\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data.id).to.eql(1); //id가 1인가\r\n    pm.expect(data.name).to.eql(\"Leanne Graham\"); //이름이 같은가\r\n    pm.expect(data.email).to.exist; //값이 있는가\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Nonexistent User",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"존재하지 않는 사용자 - 상태코드 404\", function(){\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\npm.test(\"존재하지 않는 사용자 - 빈 응답 검증\", function(){\r\n    const data = pm.response.json();\r\n     pm.expect(data).to.eql({});\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/9999",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "9999"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create User",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const data = pm.response.json();\r\n\r\npm.test(\"사용자 생성 - 상태코드 201\", function(){\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"사용자 생성 - 응답 데이터 검증\", function(){\r\n    pm.expect(data.id).to.eql(11);\r\n    pm.expect(data.name).to.eql(\"LIM\");\r\n    pm.expect(data.age).to.eql(28);\r\n});\r\n\r\npm.test(\"사용자 ID 컬렉션 변수 저장 검증\", function(){\r\n    //data의 id값을 컬렉션 변수에 저장\r\n    pm.collectionVariables.set(\"createdUserId\", data.id);\r\n\r\n    //저장한 컬렉션 변수 값과 현재 data의 id값이 동일한지 검증\r\n    pm.expect(\r\n        Number(pm.collectionVariables.get(\"createdUserId\"))).to.eql(data.id);\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"LIM\",\r\n    \"age\":28\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://jsonplaceholder.typicode.com/users",
+                  "protocol": "https",
+                  "host": [
+                    "jsonplaceholder",
+                    "typicode",
+                    "com"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "02-Data Driven Tests",
+          "item": [
+            {
+              "name": "User ID Validation",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "//테스트 데이터 배열\r\nconst testData =[\r\n    {id: 1, status: 200},\r\n    {id: 5, status: 200},\r\n    {id: 10, status: 200},\r\n    {id: 11, status: 404},\r\n    {id: 999, status: 404}\r\n];\r\n\r\nconst current = testData[pm.info.iteration];\r\n\r\nif (!current){\r\n    throw new Error(\"테스트 데이터가 없습니다.\");\r\n}\r\n\r\n//현재 실행할 로컬변수 설정\r\npm.variables.set(\"runnerUserId\",current.id);\r\npm.variables.set(\"expectedStatus\",current.status);"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const expectedId = Number(\r\n    pm.variables.get(\"runnerUserId\")\r\n);\r\n\r\nconst expectedStatus = Number(\r\n    pm.variables.get(\"expectedStatus\")\r\n);\r\n\r\npm.test(\"HTTP 상태 코드 검증\", function(){\r\n    pm.response.to.have.status(expectedStatus);\r\n});\r\n\r\npm.test(\"사용자 조회 데이터 검증\", function(){\r\n    const data = pm.response.json();\r\n\r\n    if(expectedStatus == 200){\r\n        pm.expect(data.id).to.eql(expectedId)\r\n    }\r\n    else if (expectedStatus == 404){\r\n        pm.expect(data).to.eql({});\r\n    }\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/{{runnerUserId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{runnerUserId}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://jsonplaceholder.typicode.com"
+    },
+    {
+      "key": "createdUserId",
+      "value": ""
+    }
+  ]
+}
