@@ -1,4 +1,4 @@
-<img width="283" height="134" alt="image" src="https://github.com/user-attachments/assets/ca838f94-0302-4d35-935b-501c634228ec" /># Day 04 - SQL 데이터 검증
+# Day 04 - SQL 데이터 검증
 
 ## 학습 내용
 - `SELECT`, `WHERE`, `ORDER BY`를 활용한 조건별 데이터 조회
