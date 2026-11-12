@@ -16,7 +16,10 @@
 | `01-Setup.sql` | 테스트 테이블 생성 및 샘플 데이터 입력 |
 | `02-SQL-Validation.sql` | SQL 데이터 조회·집계 및 정합성 검증 |
 
-1. ACTIVE 상태이며, 30세 이상 사용자 조회 실행 결과
+
+
+**[실행 결과]**
+1. ACTIVE 상태이며, 30세 이상 사용자 조회
 <img width="310" height="191" alt="image" src="https://github.com/user-attachments/assets/c2e7212a-32f7-4768-bdd3-3385d9d50150" />
 
 2. 주문 상태별 건수 집계
