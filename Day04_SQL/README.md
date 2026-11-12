@@ -34,17 +34,18 @@
 <img width="363" height="275" alt="image" src="https://github.com/user-attachments/assets/cf6ad7e0-f847-4812-8582-6cc8a3e03e6a" />
 
 ## API 응답과 DB 상태 불일치 검증(가상 사례)
+- API 요청: GET /users/103
+- DB 저장값: BLOCKED
+- API 응답값: ACTIVE
+- 판정: FAIL (최신 상태 반환이 요구되는 경우)
 
-- 내용: "DB에서 user_id 103의 상태가 'BLOCKED' 상태로 확인했었는데 GET 메소드로 users/103 을 조회했을때, status가 'ACTIVE'로 반환되고 있다 추가 확인 방법은?"
-1. DB에서 103 user 상태를 조회
-<img width="283" height="134" alt="image" src="https://github.com/user-attachments/assets/d47537a9-9c51-4b94-82e9-f50b514d2918" />
+- **추가 검증**
+1. SQL을 사용하여 DB의 사용자 상태 재확인
+2. 다른 사용자 조회를 통해 결함 발생 범위 확인
+4. Postman에서 Cache-Control: no-cache 설정 후 API 재호출
+6. 일정 간격으로 API를 재홀출하여 데이터 동기화 지연 여부 확인
+7. API 서버와 DB의 연결 환경 및 데이터 소스 일치 여부 확인
 
-2. 다른 유저 정보도 조회해보기
-<img width="288" height="247" alt="image" src="https://github.com/user-attachments/assets/9faa16ed-1e44-4933-be03-67ce406e3709" />
+- **검증 목적**
 
-4. GET 메소드가 캐시를 사용하는 가능성이 존재하여 postman -> Headers에서 환경 설정 (KEY = Cache-Control / Value = no-cache)
-<img width="718" height="180" alt="image" src="https://github.com/user-attachments/assets/504ee8dc-e264-4319-b81a-7ec4f918becd" />
-
-6. 데이터 동기화 시간 확인 (일정 간격으로 재호출하여 반영되는데 걸리는 시간 파악
-7. 서버 환경과 DB 환경이 다른지 확인 등
-
+API 응답과 DB 데이터의 정합성을 확인하고, 캐시·동기화·환경 불일치 등 가능한 원인을 분석한다.
