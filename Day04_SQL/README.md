@@ -35,10 +35,10 @@
 
 ## API 응답과 DB 상태 불일치 검증(가상 사례)
 - **시나리오**
-1. API 요청: GET /users/103
-2. DB 저장값: BLOCKED
-3. API 응답값: ACTIVE
-4. 판정: FAIL (최신 상태 반환이 요구되는 경우)
+1. API 요청: `GET /users/103`
+2. DB 저장값: `BLOCKED`
+3. API 응답값: `ACTIVE`
+4. 판정: `FAIL` (최신 상태 반환이 요구되는 경우)
 
 - **추가 검증**
 1. SQL을 사용하여 DB의 사용자 상태 재확인
