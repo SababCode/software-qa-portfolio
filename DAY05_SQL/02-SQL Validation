@@ -1,0 +1,66 @@
+-- Day 05: SQL 심화 데이터 검증 실습
+
+-- 1. LEFT JOIN: 주문 기록이 없는 사용자 확인
+-- 기대 결과: 105 Jung, 106 Lim (2행)
+SELECT u.user_id, u.name
+FROM users AS u
+LEFT JOIN orders AS o
+    ON u.user_id = o.user_id
+WHERE o.order_id IS NULL
+ORDER BY u.user_id ASC;
+
+-- 2. 서브쿼리: 평균 주문 금액(30,000) 초과 주문 확인
+-- 기대 결과: 1006 60000, 1004 45000 (2행)
+SELECT order_id, amount
+FROM orders
+WHERE amount > (
+    SELECT AVG(amount)
+    FROM orders
+)
+ORDER BY amount DESC;
+
+-- 3. CASE WHEN: 주문 금액 구간별 분류
+-- 기대 결과: 7행, order_id 1007의 amount_level은 UNKNOWN
+SELECT order_id, amount,
+    CASE WHEN amount >= 50000 THEN 'HIGH'
+         WHEN amount >= 20000 THEN 'MEDIUM'
+         WHEN amount < 20000 THEN 'LOW'
+         ELSE 'UNKNOWN'
+    END AS amount_level
+FROM orders
+ORDER BY order_id ASC;
+
+-- 4. COALESCE: 미등록 전화번호 표시
+-- 기대 결과: 6행, Lee/Choi/Jung의 phone은 '미등록'
+SELECT user_id, name, COALESCE(phone, '미등록') AS phone
+FROM users
+ORDER BY user_id ASC;
+
+-- 5. EXISTS: PAID 주문이 존재하는 사용자 확인
+-- 기대 결과: 101 Kim, 102 Lee, 103 Park, 104 Choi (4행)
+SELECT u.user_id, u.name
+FROM users AS u
+WHERE EXISTS (
+    SELECT 1
+    FROM orders AS o
+    WHERE o.user_id = u.user_id
+      AND o.status = 'PAID'
+)
+ORDER BY u.user_id ASC;
+
+-- 6. 트랜잭션: 주문 1002의 금액 수정 후 복구
+-- 기대 결과: UPDATE 후 50000, ROLLBACK 후 30000
+-- 실습용 DB에서 실행하세요. 이 구간을 하나의 SQL 실행으로 처리합니다.
+BEGIN TRANSACTION;
+
+UPDATE orders
+SET amount = 50000
+WHERE order_id = 1002;
+
+SELECT *
+FROM orders;
+
+ROLLBACK;
+
+SELECT *
+FROM orders;
