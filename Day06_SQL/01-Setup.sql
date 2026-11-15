@@ -1,0 +1,52 @@
+PRAGMA foreign_keys = ON;
+
+DROP TABLE IF EXISTS payments;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    user_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    balance INTEGER NOT NULL
+);
+
+CREATE TABLE orders (
+    order_id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    amount INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE payments (
+    payment_id INTEGER PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    paid_amount INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
+
+INSERT INTO users VALUES
+(101, 'Kim', 50000),
+(102, 'Lee', 30000),
+(103, 'Park', 20000),
+(104, 'Choi', 70000),
+(105, 'Jung', 10000),
+(106, 'Lim', 40000);
+
+INSERT INTO orders VALUES
+(1001, 101, 15000, 'PAID'),
+(1002, 102, 30000, 'PAID'),
+(1003, 101, 20000, 'CANCELLED'),
+(1004, 104, 45000, 'PAID'),
+(1005, 105, 10000, 'PENDING'),
+(1006, 102, 12000, 'PAID'),
+(1007, 106, 25000, 'PAID');
+
+INSERT INTO payments VALUES
+(5001, 1001, 15000, 'SUCCESS'),
+(5002, 1002, 30000, 'SUCCESS'),
+(5003, 1003, 20000, 'FAILED'),
+(5004, 1004, 40000, 'SUCCESS'),
+(5005, 1006, 12000, 'SUCCESS'),
+(5006, 1007, 25000, 'SUCCESS');
