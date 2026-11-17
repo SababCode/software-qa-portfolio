@@ -11,14 +11,14 @@ public class Main {
         validateResponseTime(1.00, expectedResponseTime);
         validateResponseTime(1.01, expectedResponseTime);
         validateResponseTime(1.25, expectedResponseTime);
-            //2-1. 음수 응답 시간 입력 시 IllegalArgumentException 발생 확인
+        //2-1. 음수 응답 시간 입력 시 IllegalArgumentException 발생 확인
         try{
             validateResponseTime(-3.14, expectedResponseTime);
         }
         catch(IllegalArgumentException e) {
             System.out.println("예외 발생: " + e.getMessage());
         }
-            //2-2. NaN 응답 시간 입력 시 IllegalArgumentException 발생 확인
+        //2-2. NaN 응답 시간 입력 시 IllegalArgumentException 발생 확인
         try{
             validateResponseTime(Double.NaN, expectedResponseTime);
         }
@@ -31,7 +31,7 @@ public class Main {
         int[] expectedCodes = {200, 201, 204, 404, 500};
         verifyTestResults(actualCodes, expectedCodes);
         
-            // 3-1. 배열 길이 불일치 예외 확인
+        // 3-1. 배열 길이 불일치 예외 확인
         try{
             actualCodes = new int[] {200, 400, 204, 404, 503, 600};
             verifyTestResults(actualCodes, expectedCodes);
@@ -39,7 +39,7 @@ public class Main {
         catch(IllegalArgumentException e) {
             System.out.println("예외 발생: " + e.getMessage());
         }
-            //3-2. null 배열 예외 확인
+        //3-2. null 배열 예외 확인
         try{
             actualCodes = null;
             verifyTestResults(actualCodes, expectedCodes);
