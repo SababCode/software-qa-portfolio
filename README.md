@@ -15,7 +15,7 @@ Postman, SQL, Java를 활용한 API 테스트, 데이터 검증 및 테스트 �
 
 - **API 테스트**: Postman, JavaScript
 - **데이터베이스**: SQLite, SQL
-- **프로그래밍**: Java (학습 예정)
+- **프로그래밍**: Java
 - **버전 관리 및 문서화**: GitHub
 
 ## 학습 진행 현황
