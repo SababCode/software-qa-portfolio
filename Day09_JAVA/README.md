@@ -54,7 +54,7 @@ Java를 활용하여 여러 테스트 케이스를 자동 실행하고, 상태 �
 총 8개의 테스트 케이스를 실행하여 개별 검증 결과와 최종 집계 결과가 기대값과 일치하는지 확인했습니다.
 
 ### 실행 결과 이미지
-<img width="450" height="337" alt="image" src="https://github.com/user-attachments/assets/9f89218d-43f2-4185-9c3a-74aa568369a6" />
+<img width="262" height="337" alt="image" src="https://github.com/user-attachments/assets/9f89218d-43f2-4185-9c3a-74aa568369a6" />
 
 
 ※ OVERALL RESULT의 FAIL은 의도적으로 구성한 실패 및 예외 테스트 케이스에 따른 정상 결과입니다.
