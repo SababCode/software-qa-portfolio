@@ -1,0 +1,176 @@
+{
+  "info": {
+    "_postman_id": "fe203d0d-371f-4f25-bf8a-0df31644fe6e",
+    "name": "SQA_API_TEST",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57617772",
+    "_collection_link": "https://go.postman.co/collection/57617772-fe203d0d-371f-4f25-bf8a-0df31644fe6e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "DAY10_API_Integration_Test",
+      "item": [
+        {
+          "name": "01_Create_Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json()\r\n\r\npm.test(\"상태 코드 확인\", function(){\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"데이터 유형 확인\", function(){\r\n    pm.response.to.be.json;\r\n    const data = pm.response.json()\r\n    pm.expect(data).to.have.property(\"id\");\r\n    pm.expect(data).to.have.property(\"userId\");\r\n});\r\n\r\npm.test(\"id 숫자 타입 확인\", function(){\r\n    const data = pm.response.json()\r\n    pm.expect(Number.isInteger(data.id)).to.be.true;\r\n    pm.expect(data.id).to.be.above(0);\r\n});\r\n\r\npm.test(\"user_id 1 확인\", function(){\r\n    const data = pm.response.json()\r\n    pm.expect(data.userId).to.eql(1);\r\n});\r\n\r\npm.test(\"title 데이터 확인\", function(){\r\n    const data = pm.response.json()\r\n    pm.expect(data.title).to.eql(\"Day10 QA Test\");\r\n});\r\n\r\npm.test(\"body 데이터 확인\", function(){\r\n    const data = pm.response.json()\r\n    pm.expect(data.body).to.eql(\"Postman API validation practice\");\r\n});\r\n\r\npm.test(\"변수 저장 검증\", function(){\r\n    const data = pm.response.json()\r\n    pm.collectionVariables.set(\"postId\", data.id);\r\n    pm.collectionVariables.set(\"userId\", data.userId);\r\n\r\n    pm.expect(Number(pm.collectionVariables.get(\"postId\"))).to.eql(data.id);\r\n    pm.expect(Number(pm.collectionVariables.get(\"userId\"))).to.eql(data.userId);\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userId\": 1,\r\n    \"title\": \"Day10 QA Test\",\r\n    \"body\": \"Postman API validation practice\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02_User_Validation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"상태 코드 확인\", function(){\n    pm.response.to.have.status(200);\n});\n\npm.test(\"데이터 유형 확인\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"ID 필드 검증\", function(){\n    const data = pm.response.json()\n    pm.expect(data).to.have.property(\"id\");\n    pm.expect(Number.isInteger(data.id)).to.be.true;\n    pm.expect(data.id).to.be.above(0);\n});\n\npm.test(\"사용자 ID 비교\", function(){\n    const data = pm.response.json()\n    pm.expect(Number(pm.collectionVariables.get(\"userId\"))).to.equal(data.id);\n});\n\npm.test(\"이름 검증\", function(){\n    const data = pm.response.json()\n    pm.expect(data).to.have.property(\"name\");\n    pm.expect(data.name).to.be.a(\"string\").and.to.not.be.empty;\n});\n\npm.test(\"이메일 검증\", function(){\n    const data = pm.response.json()\n    pm.expect(data).to.have.property(\"email\");\n    pm.expect(data.email).to.be.a(\"string\").and.to.not.be.empty;\n});\n\npm.test(\"컬렉션 변수 저장\", function(){\n    const data = pm.response.json()\n    pm.collectionVariables.set(\"userName\", data.name);\n    pm.collectionVariables.set(\"userEmail\", data.email);\n\n    pm.expect(String(pm.collectionVariables.get(\"userName\"))).to.eql(data.name);\n    pm.expect(String(pm.collectionVariables.get(\"userEmail\"))).to.eql(data.email);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03_Negative_Tests",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"상태 코드 확인\", function(){\n    pm.response.to.have.status(404);\n});\n\npm.test(\"데이터 형식 확인\", function(){\n    pm.response.to.be.json;\n});\n\npm.test(\"응답 객체 데이터 확인\", function(){\n    pm.expect(pm.response.json()).to.eql({});\n});\n\npm.test(\"id 필드 데이터 없음 확인\", function(){\n    const data = pm.response.json();\n    pm.expect(data).to.not.have.property(\"id\");\n});\n\npm.test(\"userId가 1 유지 확인\", function(){\n    const beforeUserId = pm.variables.get(\"beforeUserId\");\n\n    pm.expect(pm.collectionVariables.get(\"userId\")).to.eql(beforeUserId);\n});\n\npm.test(\"userName과 userEmail값 변경되지 않음 확인\", function(){\n    const beforeUserName = pm.variables.get(\"beforeUserName\");\n    const beforeUserEmail = pm.variables.get(\"beforeUserEmail\");\n\n    pm.expect(pm.collectionVariables.get(\"userName\")).to.eql(beforeUserName)\n    pm.expect(pm.collectionVariables.get(\"userEmail\")).to.eql(beforeUserEmail)\n});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const userId = pm.collectionVariables.get(\"userId\");\nconst userName = pm.collectionVariables.get(\"userName\");\nconst userEmail = pm.collectionVariables.get(\"userEmail\");\n\npm.variables.set(\"beforeUserId\", userId);\npm.variables.set(\"beforeUserName\", userName);\npm.variables.set(\"beforeUserEmail\", userEmail);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04_GET_User_Posts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"상태 코드 확인\", function(){\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"json 타입 확인\", function(){\r\n    pm.response.to.be.json;\r\n});\r\n\r\npm.test(\"데이터 배열 확인\", function(){\r\n    const data = pm.response.json();\r\n    pm.expect(Array.isArray(data)).to.be.true;\r\n});\r\n\r\npm.test(\"게시글 1개 이상인지 확인\", function(){\r\n    const data = pm.response.json();\r\n    pm.expect(data.length).to.be.at.least(1);\r\n});\r\n\r\npm.test(\"모든 게시글 id가 컬렉션 변수와 동일한지\", function(){\r\n    const data = pm.response.json();\r\n    const expectedUserId = Number(pm.collectionVariables.get(\"userId\"));\r\n\r\n    data.forEach(function(post){\r\n        pm.expect(post.userId).to.eql(expectedUserId);\r\n    });\r\n});\r\n\r\npm.test(\"모든 게시글 id가 양의 정수인지\", function(){\r\n    const data = pm.response.json();\r\n\r\n    const ids = data.map(post => post.id);\r\n    const validIds = ids.every(id => Number.isInteger(id) && id > 0);\r\n    pm.expect(validIds).to.be.true;\r\n});\r\n\r\npm.test(\"모든 게시글의 title이 비어있지 않은지\", function(){\r\n    const data = pm.response.json();\r\n\r\n    data.forEach(function(post){\r\n        pm.expect(post.title).to.be.a(\"string\");\r\n        pm.expect(post.title.trim()).to.not.be.empty;\r\n    });\r\n})\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/posts?userId={{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "posts"
+              ],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://jsonplaceholder.typicode.com"
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "postId",
+      "value": ""
+    },
+    {
+      "key": "userName",
+      "value": ""
+    },
+    {
+      "key": "userEmail",
+      "value": ""
+    }
+  ]
+}
