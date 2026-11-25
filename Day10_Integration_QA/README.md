@@ -15,6 +15,7 @@ Postman으로 JSONPlaceholder의 사용자·게시글 API 응답을 검증하고
 | Java | Post 201~209 | 9 PASS / 0 FAIL |
 
 **실습용 이상 데이터:** Post 202 (`INVALID_USER`), Post 203·204 (`INVALID_TITLE`). 실제 서비스에서 발견된 결함이 아닙니다.
+
 상세 내용은 [최종 보고서](TestReport.md)
 
 ## 파일 구성
