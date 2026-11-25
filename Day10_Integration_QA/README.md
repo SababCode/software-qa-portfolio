@@ -15,6 +15,7 @@ Postman으로 JSONPlaceholder의 사용자·게시글 API 응답을 검증하고
 | Java | Post 201~209 | 9 PASS / 0 FAIL |
 
 **실습용 이상 데이터:** Post 202 (`INVALID_USER`), Post 203·204 (`INVALID_TITLE`). 실제 서비스에서 발견된 결함이 아닙니다.
+상세 내용은 [최종 보고서](TestReport.md)
 
 ## 파일 구성
 - `Postman/`: 업로드한 SQA_API_TEST 컬렉션의 Day 10 요청 4개 포함 (baseUrl 기본값 설정)
@@ -33,5 +34,3 @@ Postman으로 JSONPlaceholder의 사용자·게시글 API 응답을 검증하고
 
 ## 실습 한계
 JSONPlaceholder의 POST는 영구 저장을 수행하지 않으며, SQLite는 원격 서비스 DB와 연결되어 있지 않습니다. 따라서 이번 결과는 API 응답 검증과 별도 실습 데이터 정합성 검증이며 E2E 데이터 저장 검증은 아닙니다.
-
-상세 내용은 [최종 보고서](TestReport.md)를 참고하세요.
