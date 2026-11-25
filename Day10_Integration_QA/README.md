@@ -16,7 +16,7 @@ Postman으로 JSONPlaceholder의 사용자·게시글 API 응답을 검증하고
 
 **실습용 이상 데이터:** Post 202 (`INVALID_USER`), Post 203·204 (`INVALID_TITLE`). 실제 서비스에서 발견된 결함이 아닙니다.
 
-상세 내용은 [최종 보고서](TestReport.md)
+* 상세 내용은 [최종 보고서](TestReport.md)
 
 ## 파일 구성
 - `Postman/`: 업로드한 SQA_API_TEST 컬렉션의 Day 10 요청 4개 포함 (baseUrl 기본값 설정)
@@ -25,7 +25,6 @@ Postman으로 JSONPlaceholder의 사용자·게시글 API 응답을 검증하고
 - `SQL/day10_SQL.db`: 실습 데이터베이스 원본
 - `SQL/Validation.sql`: 6개 쿼리를 순서대로 실행하는 통합 스크립트
 - `Java/`: 직접 작성한 Java 코드 4개
-- `images/`: 제출된 Postman·초기 Java 실행 화면 (최종 Java 화면은 별도 추가 가능)
 - `TestReport.md`: 최종 QA 검증 보고서
 
 ## 실행 안내
